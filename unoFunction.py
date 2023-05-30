@@ -1,73 +1,179 @@
 import time 
 import sys
+import random
 from termcolor import colored
+from uno_data import *
 
 # making the deck :
 def buildDeck():
     deck = []
-    colors = ["red","blue","yellow","green"]
-    values = [0,1,2,3,4,5,6,7,8,9,"Draw Two","Skip","Reverse"]
-    wild   = ["Wild Card" , "Wild Draw Four"]    
-    for color in colors:
-         for value in values:
+    for color in COLORS:
+         for value in VALUES:
               card = "{} {}".format(color , value)
               deck.append(card)
               if value != 0: # -> because only one 0 card per color.
                    deck.append(card)
     for i in range (4):
-         deck.append(wild[0])
-         deck.append(wild[1])
+         deck.append(WILD[0])
+         deck.append(WILD[1])
     return deck
 
-    
+# Ask the number of players :
+def players_number():
+    valid_answer = True
+    while valid_answer:
+        try:
+            players = int(input("How many players? \n> "))
+            if players < 2 or players > 4:
+                print('Please enter a number between 2 and 4.\n')
+            else:
+                valid_answer = False
+        except ValueError:
+            print("Please enter a valid number.")
+        
+    return players
+
+# Ask the name of players :
+def players_name(playersNumber):
+    number = 1
+    names_list = []
+    while number <= playersNumber:
+        playerName = input(f"What is the name of player {number}? \n> ")
+        if playerName in names_list:
+            print('The name exists in the list\n')
+        else:
+            number += 1
+            names_list.append(playerName)
+    return names_list
+
+# shuffle the deck :
+def shuffle_deck (deck):
+    for i in range (2):
+        random.shuffle(deck)
+    return deck
+
+# Draw card function :
+def drawCard (numCards,unoDeck):
+    cardsDraw = []
+    for i in range (numCards):
+        cardsDraw.append(unoDeck.pop(0))
+    return cardsDraw
+
+# Deal cards to players: 
+def dealCards (playersNumber , unoDeck):
+    players_cards = [] # to store the players cards
+    for x in range (playersNumber):
+        cards = drawCard(7,unoDeck)
+        players_cards.append(cards)
+    return players_cards
+
+# Check special card ::
+def special_card(discards):
+    played_color  = discards[0].split()
+    if played_color == "wild":
+        print(COLORS)
+        color = int(input("What color would you like to chose? \n>  "))
+
+
+
+# check if play_TURN == players_NUMBERS
+def check_playerTurn(player_turn,players_number):
+    if player_turn == players_number-1 :
+        player_turn = 0  # ---> to start the round again
+    elif player_turn < 0 :
+        player_turn = players_number - 1   # ---> to start the round again
+    else:
+        player_turn += 1
+    return player_turn
+
+# append card to player hand while playing
+def append_card(draw_cards , player_hands):
+    for card in draw_cards:
+            player_hands.append(card)
+    return player_hands
+
+# show player cards function:
+def show_playerHand (player , playerDic):
+    print_yellow("\n{}'s turn\nPlease press enter to verify your id! ".format(player))
+    input("\n")
+    for i in range (len(playerDic)):
+        print_magenta(" card {} = {}".format(i+1 , playerDic[i]))
+
+# check if player can play:
+def canPlay(discards, playerHand):
+    splited_card = discards.split(" ",1)
+
+    for card in playerHand:
+        if "Wild" in card:
+            return True
+        elif discards in card:
+            return True
+        elif splited_card[0] in card or splited_card[1] in card:
+            return True
+    return False
+
+# check if player played the right card:
+def chech_playedCard(discards,players_cards):
+    not_vaild_card = True
+    while not_vaild_card :
+        try:
+            chosen_card = int(input("Wich card do you want to play? \n> "))
+            if not canPlay(discards,[players_cards[chosen_card-1]]):
+                print_red(IVALID_CARD)
+            else:
+                not_vaild_card = False
+        except ValueError:
+            print_red("NOT a valid number. Please choose a valid number\n")
+    return chosen_card
+
 # title screen :
 def title_screen():
-    print_green    ("                 > Play                    \n")
-    print_yellow   ("                 > Help                    \n")
-    print_red      ("                 > Quit                  \n")
-    choice = input (">  ")
+    valid_answer = True
+    while valid_answer:
+        print_green    ("                 > Play                    \n")
+        print_yellow   ("                 > Help                    \n")
+        print_red      ("                 > Quit                  \n")
+        choice = input (">  ")
+        if choice.lower() not in START_SCREEN_OPTIONS:
+            print_red("Please enter a valid answer\n")
+        else:
+            valid_answer = False
     return choice.lower()
 
 # options title screen :
-def titleScreen_choice(option):
+def start_screen_choice(option):
     if option == "play":
         print_magenta ("You have chosen the 'PLAY' option.\n")
         loading()
-    elif option == "help":
-        print_magenta ("You have chosen the 'HELP' option.\n")
     elif option == "quit":
         print_magenta ("You have chosen the 'QUIT' option.\nYou can always come back to play.")
         exit()
+    elif option == "help":
+        print_magenta ("You have chosen the 'HELP' option.\n")
+        help_option()
 
 
 # Help option :
 def help_option():
-    print_red ("How to Play the Uno Game:\n")
-    print_magenta ("""
-        > Each player draws a card, and the player with the highest card value start the game.
-        > Each player will have 7 random cards.
-        > The top card of the draw pile will be revealed and the game will start.
-        > Play a card that matches the color, number, or symbol on the card.
-        > Draw a card from the draw pile if you can't play a card.
-        > Pay attention to action and Wild cards.
-        > Write "Uno" if you only have 1 card left.
-        > Play your last card to win the hand.
-        > The points in each player's hand will be revealed at the end of each round.
-
-            Please select an option to continue.                  
-    """)
-    
+    explanation = True
+    while explanation:
+        print_red ("How to Play the Uno Game:\n")
+        print_magenta (INSTRUCTION)
+        extra_explanation = input("Was the explanation clear enough for you?\n>  ")
+        
+        if extra_explanation.lower() not in YES_CHOICE :
+            print_blue("we're going to give the explanation one more time\n")
+        else:
+            print_magenta("Please select an option to continue.")
+            explanation = False
 
 
 # loading function :
 def loading():
     time.sleep(0.1)
-    # animation = ["10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"]
-    animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
-
     for i in range(20):
         time.sleep(0.1)
-        sys.stdout.write("\rLOADING.... " + animation[i % len(animation)])
+        sys.stdout.write("\rLOADING.... " + ANIMATION[i % len(ANIMATION)])
         sys.stdout.flush() 
     print_yellow("\nThe game will start in a few seconds!")
      
@@ -81,7 +187,7 @@ def slowprint(str):
 # colored text =
 def print_colorvars(txt:str='{}', vars:list=[], color:str='yellow') -> None:
     vars = map(lambda string, color=color: colored(str(string), color, attrs=['bold']) ,vars)
-    slowprint(txt.format(*vars))
+    print(txt.format(*vars))
 
 def print_green(name:str) -> None:
     print_colorvars(vars=['{}'.format(name)], color='green')
@@ -97,7 +203,6 @@ def print_blue(name:str) -> None:
 
 
 def print_magenta(name:str) -> None:
-    nextStep(1)
     print_colorvars(vars=['{}'.format(name)], color='magenta')
 
 def nextStep(secwait:int=1) -> None:
