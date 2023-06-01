@@ -16,15 +16,17 @@ playerNames   = players_name(playersNumber)
 unoDeck       = buildDeck()
 shuffle_deck(unoDeck)
 discards.append(unoDeck.pop(0)) # check if it's a wild or draw card 
-
 players_cards = dealCards(playersNumber , unoDeck)
 
 while PLAY_AGAIN:
+    cardVal   = current_value (discards[-1])
+    cardColor = current_color (discards[-1])
+
     show_playerHand(playerNames[player_turn],players_cards[player_turn])
     print_blue("\nCard on the top of discards pile: {}".format(discards[-1]))
 
-    if canPlay(discards[0], players_cards[player_turn]):
-        chosen_card = chech_playedCard(discards[0],players_cards[player_turn])
+    if canPlay(cardVal, cardColor, players_cards[player_turn]):
+        chosen_card = check_playedCard(cardVal, cardColor, players_cards[player_turn])
         print_green("{} played with the card : {}".format(playerNames[player_turn],players_cards[player_turn][chosen_card-1]))
         discards.append(players_cards[player_turn].pop(chosen_card-1))
     else:
@@ -32,5 +34,5 @@ while PLAY_AGAIN:
         append_card(drawCard(1,unoDeck),players_cards[player_turn])
      
     
-    player_turn = check_playerTurn(player_turn,playersNumber)
+    player_turn = check_playerTurn(player_turn,playersNumber,play_direction)
     

@@ -18,6 +18,102 @@ def buildDeck():
          deck.append(WILD[1])
     return deck
 
+# Draw card function :
+def drawCard (numCards,unoDeck):
+    cardsDraw = []
+    for i in range (numCards):
+        cardsDraw.append(unoDeck.pop(0))
+    return cardsDraw
+
+# Deal cards to players: 
+def dealCards (playersNumber , unoDeck):
+    players_cards = [] # to store the players cards
+    for x in range (playersNumber):
+        cards = drawCard(7,unoDeck)
+        players_cards.append(cards)
+    return players_cards
+
+# Check special card ::
+def special_card(unoDeck, currentColor, currentVal, play_direction,play_turn,player_hands):
+    if currentColor == "wild":
+        print(COLORS)
+        color = int(input("What color would you like to chose? \n>  "))
+        currentColor = COLORS[color-1]
+    elif currentVal == "Reverse":
+        play_direction = play_direction * -1
+    elif currentVal == "skip":
+        play_turn += play_direction
+    elif currentVal == "Draw Two":
+        draw_card = drawCard (2,unoDeck)
+        append_card(draw_card,player_hands)
+    elif currentVal == "Draw Four":
+        draw_card = drawCard (4,unoDeck)
+        append_card(draw_card,player_hands)
+
+
+# check if play_TURN == players_NUMBERS
+def check_playerTurn(player_turn,players_number,playDirection):
+    if player_turn == players_number-1 :
+        player_turn = 0  # ---> to start the round again
+    elif player_turn < 0 :
+        player_turn = players_number - 1   # ---> to start the round again
+    else:
+        player_turn += playDirection
+    return player_turn
+
+# append card to player hand while playing
+def append_card(draw_cards , player_hands):
+    for card in draw_cards:
+            player_hands.append(card)
+    return player_hands
+
+# show player cards function:
+def show_playerHand (player , playerDic):
+    print_yellow("\n{}'s turn\nPlease press enter to verify your id! ".format(player))
+    input("\n")
+    for i in range (len(playerDic)):
+        print_magenta(" card {} = {}".format(i+1 , playerDic[i]))
+
+# check if player can play:
+def canPlay(cardVal, cardColor, playerHand):
+    for card in playerHand:
+        if "Wild" in card:
+            return True
+        elif cardVal in card or cardColor in card:
+            return True
+    return False
+
+# check if player played the right card:
+def check_playedCard(cardVal, cardColor, players_cards):
+    not_vaild_card = True
+    while not_vaild_card :
+        try:
+            chosen_card = int(input("Wich card do you want to play? \n> "))
+            if not canPlay(cardVal, cardColor,[players_cards[chosen_card-1]]):
+                print_red(IVALID_CARD)
+            else:
+                not_vaild_card = False
+        except ValueError:
+            print_red("NOT a valid number. Please choose a valid number\n")
+    return chosen_card
+
+# Current color :
+def current_color(discard):
+    splitCard = discard.split(" ", 1)
+    if splitCard[0] == "wild":
+        cardColor = "Any"
+    else:
+        cardColor = splitCard[0]
+    return cardColor
+# Current value :
+def current_value(discard):
+    splitCard = discard.split(" ", 1)
+    if splitCard[0] == "Wild":
+        cardVal = "Any"
+    else:
+        cardVal = splitCard[1]
+    return cardVal
+
 # Ask the number of players :
 def players_number():
     valid_answer = True
@@ -51,80 +147,6 @@ def shuffle_deck (deck):
     for i in range (2):
         random.shuffle(deck)
     return deck
-
-# Draw card function :
-def drawCard (numCards,unoDeck):
-    cardsDraw = []
-    for i in range (numCards):
-        cardsDraw.append(unoDeck.pop(0))
-    return cardsDraw
-
-# Deal cards to players: 
-def dealCards (playersNumber , unoDeck):
-    players_cards = [] # to store the players cards
-    for x in range (playersNumber):
-        cards = drawCard(7,unoDeck)
-        players_cards.append(cards)
-    return players_cards
-
-# Check special card ::
-def special_card(discards):
-    played_color  = discards[0].split()
-    if played_color == "wild":
-        print(COLORS)
-        color = int(input("What color would you like to chose? \n>  "))
-
-
-
-# check if play_TURN == players_NUMBERS
-def check_playerTurn(player_turn,players_number):
-    if player_turn == players_number-1 :
-        player_turn = 0  # ---> to start the round again
-    elif player_turn < 0 :
-        player_turn = players_number - 1   # ---> to start the round again
-    else:
-        player_turn += 1
-    return player_turn
-
-# append card to player hand while playing
-def append_card(draw_cards , player_hands):
-    for card in draw_cards:
-            player_hands.append(card)
-    return player_hands
-
-# show player cards function:
-def show_playerHand (player , playerDic):
-    print_yellow("\n{}'s turn\nPlease press enter to verify your id! ".format(player))
-    input("\n")
-    for i in range (len(playerDic)):
-        print_magenta(" card {} = {}".format(i+1 , playerDic[i]))
-
-# check if player can play:
-def canPlay(discards, playerHand):
-    splited_card = discards.split(" ",1)
-
-    for card in playerHand:
-        if "Wild" in card:
-            return True
-        elif discards in card:
-            return True
-        elif splited_card[0] in card or splited_card[1] in card:
-            return True
-    return False
-
-# check if player played the right card:
-def chech_playedCard(discards,players_cards):
-    not_vaild_card = True
-    while not_vaild_card :
-        try:
-            chosen_card = int(input("Wich card do you want to play? \n> "))
-            if not canPlay(discards,[players_cards[chosen_card-1]]):
-                print_red(IVALID_CARD)
-            else:
-                not_vaild_card = False
-        except ValueError:
-            print_red("NOT a valid number. Please choose a valid number\n")
-    return chosen_card
 
 # title screen :
 def title_screen():
