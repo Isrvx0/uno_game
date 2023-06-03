@@ -10,7 +10,7 @@ START_SCREEN_OPTIONS = ['play','help','quit']
 
 STARTING_HAND_SIZE = 7
 DRAW_TWO_AMOUNT = 2
-WILD_DRAW_FOUT_AMOUNT = 4
+WILD_DRAW_FOUR_AMOUNT = 4
 
 
 WINNER_POINTS = 500
@@ -23,6 +23,10 @@ HELP_CHOICE = True
 
 IVALID_CARD = "NOT a valid card. Please choose a valid card\n"
 CANT_PLAY = "You CAN'T play. You need to draw a card"
+
+
+TOP_CARD = "Card on the top of discards pile: "
+TOP_COLOR = "Color on the top of discards pile: "
 
 INSTRUCTION = """
         > Each player draws a card, and the player with the highest card value start the game.

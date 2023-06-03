@@ -29,31 +29,30 @@ def drawCard (numCards,unoDeck):
 def dealCards (playersNumber , unoDeck):
     players_cards = [] # to store the players cards
     for x in range (playersNumber):
-        cards = drawCard(7,unoDeck)
+        cards = drawCard(STARTING_HAND_SIZE,unoDeck)
         players_cards.append(cards)
     return players_cards
 
-# Check special card ::
-def special_card(unoDeck, currentColor, currentVal, play_direction,play_turn,player_hands):
-    if currentColor == "wild":
-        print(COLORS)
-        color = int(input("What color would you like to chose? \n>  "))
-        currentColor = COLORS[color-1]
-    elif currentVal == "Reverse":
-        play_direction = play_direction * -1
-    elif currentVal == "skip":
-        play_turn += play_direction
-    elif currentVal == "Draw Two":
-        draw_card = drawCard (2,unoDeck)
-        append_card(draw_card,player_hands)
-    elif currentVal == "Draw Four":
-        draw_card = drawCard (4,unoDeck)
-        append_card(draw_card,player_hands)
-
+# # Check special card ::
+# def special_card(unoDeck, currentColor, currentVal, play_direction,play_turn,player_hands):
+#     if currentColor == "wild":
+#         print(COLORS)
+#         color = int(input("What color would you like to chose? \n>  "))
+#         currentColor = COLORS[color-1]
+#     elif currentVal == "Reverse":
+#         play_direction = play_direction * -1
+#     elif currentVal == "skip":
+#         play_turn += play_direction
+#     elif currentVal == "Draw Two":
+#         draw_card = drawCard (DRAW_TWO_AMOUNT,unoDeck)
+#         append_card(draw_card,player_hands)
+#     elif currentVal == "Draw Four":
+#         draw_card = drawCard (W,unoDeck)
+#         append_card(draw_card,player_hands)
 
 # check if play_TURN == players_NUMBERS
 def check_playerTurn(player_turn,players_number,playDirection):
-    if player_turn == players_number-1 :
+    if player_turn >= players_number-1 :
         player_turn = 0  # ---> to start the round again
     elif player_turn < 0 :
         player_turn = players_number - 1   # ---> to start the round again
@@ -100,11 +99,8 @@ def check_playedCard(cardVal, cardColor, players_cards):
 # Current color :
 def current_color(discard):
     splitCard = discard.split(" ", 1)
-    if splitCard[0] == "wild":
-        cardColor = "Any"
-    else:
-        cardColor = splitCard[0]
-    return cardColor
+    return splitCard[0]
+
 # Current value :
 def current_value(discard):
     splitCard = discard.split(" ", 1)
@@ -113,6 +109,20 @@ def current_value(discard):
     else:
         cardVal = splitCard[1]
     return cardVal
+
+# Wild card :
+def wild_Card():
+    forLoop_print(COLORS)
+    color = int(input("What color would you like to chose? \n>  "))
+    cardColor = COLORS[color-1]    
+    return cardColor
+
+
+# print in for loop:
+def forLoop_print(list):
+    for element in list:
+        i = 0
+        print_magenta(" Color {} = {}".format(i+1 , element))
 
 # Ask the number of players :
 def players_number():
