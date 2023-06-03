@@ -23,10 +23,19 @@ HELP_CHOICE = True
 
 IVALID_CARD = "NOT a valid card. Please choose a valid card\n"
 CANT_PLAY = "You CAN'T play. You need to draw a card"
-
+IVALID_NUMBER = "NOT a valid number. Please choose a valid number\n"
 
 TOP_CARD = "Card on the top of discards pile: "
 TOP_COLOR = "Color on the top of discards pile: "
+
+CARD_CHOICE = "Wich card do you want to play? \n> "
+COLOR_CHOICE = "What color would you like to chose? \n>  "
+
+
+PLAY_OPTION = "You have chosen the 'PLAY' option.\n"
+HELP_OPTION = "You have chosen the 'HELP' option.\n"
+QUIT_OPTION = "You have chosen the 'QUIT' option.\nYou can always come back to play."
+
 
 INSTRUCTION = """
         > Each player draws a card, and the player with the highest card value start the game.

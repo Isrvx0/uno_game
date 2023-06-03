@@ -33,23 +33,6 @@ def dealCards (playersNumber , unoDeck):
         players_cards.append(cards)
     return players_cards
 
-# # Check special card ::
-# def special_card(unoDeck, currentColor, currentVal, play_direction,play_turn,player_hands):
-#     if currentColor == "wild":
-#         print(COLORS)
-#         color = int(input("What color would you like to chose? \n>  "))
-#         currentColor = COLORS[color-1]
-#     elif currentVal == "Reverse":
-#         play_direction = play_direction * -1
-#     elif currentVal == "skip":
-#         play_turn += play_direction
-#     elif currentVal == "Draw Two":
-#         draw_card = drawCard (DRAW_TWO_AMOUNT,unoDeck)
-#         append_card(draw_card,player_hands)
-#     elif currentVal == "Draw Four":
-#         draw_card = drawCard (W,unoDeck)
-#         append_card(draw_card,player_hands)
-
 # check if play_TURN == players_NUMBERS
 def check_playerTurn(player_turn,players_number,playDirection):
     if player_turn >= players_number-1 :
@@ -71,7 +54,7 @@ def show_playerHand (player , playerDic):
     print_yellow("\n{}'s turn\nPlease press enter to verify your id! ".format(player))
     input("\n")
     for i in range (len(playerDic)):
-        print_magenta(" card {} = {}".format(i+1 , playerDic[i]))
+        print_magenta("Card {} = {}".format(i+1 , playerDic[i]))
 
 # check if player can play:
 def canPlay(cardVal, cardColor, playerHand):
@@ -87,13 +70,13 @@ def check_playedCard(cardVal, cardColor, players_cards):
     not_vaild_card = True
     while not_vaild_card :
         try:
-            chosen_card = int(input("Wich card do you want to play? \n> "))
+            chosen_card = int(input(CARD_CHOICE))
             if not canPlay(cardVal, cardColor,[players_cards[chosen_card-1]]):
                 print_red(IVALID_CARD)
             else:
                 not_vaild_card = False
         except ValueError:
-            print_red("NOT a valid number. Please choose a valid number\n")
+            print_red(IVALID_NUMBER)
     return chosen_card
 
 # Current color :
@@ -113,17 +96,17 @@ def current_value(discard):
 # Wild card :
 def wild_Card():
     forLoop_print(COLORS)
-    color = int(input("What color would you like to chose? \n>  "))
+    color = int(input(COLOR_CHOICE))
     cardColor = COLORS[color-1]    
     return cardColor
 
 
 # print in for loop:
 def forLoop_print(list):
+    i = 1
     for element in list:
-        i = 0
-        print_magenta(" Color {} = {}".format(i+1 , element))
-
+        print_magenta("{}) {}".format(i , element))
+        i += 1
 # Ask the number of players :
 def players_number():
     valid_answer = True
@@ -131,11 +114,11 @@ def players_number():
         try:
             players = int(input("How many players? \n> "))
             if players < 2 or players > 4:
-                print('Please enter a number between 2 and 4.\n')
+                print_red('Please enter a number between 2 and 4.\n')
             else:
                 valid_answer = False
         except ValueError:
-            print("Please enter a valid number.")
+            print_red("Please enter a valid number.")
         
     return players
 
@@ -156,6 +139,8 @@ def players_name(playersNumber):
 def shuffle_deck (deck):
     for i in range (2):
         random.shuffle(deck)
+    while deck[0] in WILD:
+        random.shuffle(deck)
     return deck
 
 # title screen :
@@ -175,13 +160,13 @@ def title_screen():
 # options title screen :
 def start_screen_choice(option):
     if option == "play":
-        print_magenta ("You have chosen the 'PLAY' option.\n")
+        print_magenta (PLAY_OPTION)
         loading()
     elif option == "quit":
-        print_magenta ("You have chosen the 'QUIT' option.\nYou can always come back to play.")
+        print_magenta (HELP_OPTION)
         exit()
     elif option == "help":
-        print_magenta ("You have chosen the 'HELP' option.\n")
+        print_magenta (HELP_OPTION)
         help_option()
 
 

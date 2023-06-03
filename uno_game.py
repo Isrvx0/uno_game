@@ -24,7 +24,7 @@ while PLAY_AGAIN:
     draw_card = False
     show_playerHand(playerNames[player_turn],players_cards[player_turn])
     
-    if len(cardColor)== 1:
+    if discards[-1] in WILD:
         print_blue("\n{}{}".format(TOP_COLOR,cardColor))
     else:
         print_blue("\n{}{}".format(TOP_CARD,discards[-1]))
@@ -40,9 +40,9 @@ while PLAY_AGAIN:
         if cardColor == "Wild" or cardColor == "Any":
             cardColor = wild_Card()
         elif cardVal == "Reverse":
-            play_direction *= -1
+            player_turn = check_playerTurn(player_turn,playersNumber,-1)
         elif cardVal == "Skip":
-            player_turn += 1
+            player_turn = check_playerTurn(player_turn,playersNumber,play_direction)
         if cardVal == "Draw Two" or discards[-1] == WILD[1]:
             draw_card = True          
         
