@@ -2,6 +2,9 @@ COLORS = ["red","blue","yellow","green"]
 VALUES =  list(range(0,10)) + ["Draw Two","Skip","Reverse"]
 WILD   = ["Wild Card" , "Wild Draw Four"]    
 
+POINTS_20 = ["Draw Two","Skip","Reverse"]
+
+
 ACTION_CARDS = ["Wild Card" , "Wild Draw Four" , "Draw Two","Skip","Reverse"]
 
 YES_CHOICE = ['YES','yes','JA','ja']
@@ -12,13 +15,19 @@ STARTING_HAND_SIZE = 7
 DRAW_TWO_AMOUNT = 2
 WILD_DRAW_FOUR_AMOUNT = 4
 
+player_turn = 0
+play_direction = 1
+round_number = 1
+
+discards = []
+points_list = []
 
 WINNER_POINTS = 500
 
 ANIMATION = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
 # animation = ["10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"]
 
-PLAY_AGAIN = True
+NEW_ROUND = True
 HELP_CHOICE = True
 
 IVALID_CARD = "NOT a valid card. Please choose a valid card\n"
@@ -49,3 +58,25 @@ INSTRUCTION = """
         > The points in each player's hand will be revealed at the end of each round.
 
     """
+
+
+WINNER_DRAWING = """
+
+                 @@  @@ 
+                ,-@@~@-.   
+ _              (_, O _/   
+| Y~.            (__d._)    
+| r.|    Y@oooood@@@@@@@@oooo@F 
+ Y ||   _Y@@@@@@P   "V"  Y@@@@f 
+ | t_\_/ _)@@@@@          @@@@f  __     ,--,
+  \  `. / ~@@@@@    . .   @@@@  (_ `---'  ~~)
+   `-._/)   @@@@b__|@_@|_d@@@    _l,'~   ~~)
+      (,db   (   _  `-' _   )  ,d@_)---~~~~
+         Yb.  \ '|\____/|` / od@P 
+          Y@b  \ | nn  /','d@@P 
+            Y@b `\`---'/'od@P 
+             ~@@@@`---'@@@P~
+               Y@@@@@@@@@~
+                @@@@@@@@
+
+"""

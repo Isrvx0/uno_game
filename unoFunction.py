@@ -25,6 +25,17 @@ def drawCard (numCards,unoDeck):
         cardsDraw.append(unoDeck.pop(0))
     return cardsDraw
 
+#check Uno Deck:
+def check_unoDeck(unoDeck):
+    if len(unoDeck) < 4:
+        unoDeck = True
+    else:
+        unoDeck = False
+    return unoDeck
+
+
+
+
 # Deal cards to players: 
 def dealCards (playersNumber , unoDeck):
     players_cards = [] # to store the players cards
@@ -43,12 +54,6 @@ def check_playerTurn(player_turn,players_number,playDirection):
         player_turn += playDirection
     return player_turn
 
-# append card to player hand while playing
-def append_card(draw_cards , player_hands):
-    for card in draw_cards:
-            player_hands.append(card)
-    return player_hands
-
 # show player cards function:
 def show_playerHand (player , playerDic):
     print_yellow("\n{}'s turn\nPlease press enter to verify your id! ".format(player))
@@ -65,7 +70,7 @@ def canPlay(cardVal, cardColor, playerHand):
             return True
     return False
 
-# check if player played the right card:
+# Check played card :
 def check_playedCard(cardVal, cardColor, players_cards):
     not_vaild_card = True
     while not_vaild_card :
@@ -78,6 +83,61 @@ def check_playedCard(cardVal, cardColor, players_cards):
         except ValueError:
             print_red(IVALID_NUMBER)
     return chosen_card
+
+# check if other player have "Draw 2" or "Draw 4" card:
+# def drawCard_check (playerCard,CardVal):
+#     for card in playerCard:
+#         splited_card = card.split(" ", 1)
+#         if splited_card[0] == CardVal:
+#             drawCrad = "YES"
+#         else:
+#             drawCrad = "NO"
+#     return drawCrad
+
+# Points list = 
+def point_list(players_name):
+    point = {}
+    for name in players_name:
+        point[name] = 0
+    return point
+
+# Winnar function :
+def point_calculator(players_hand):
+    points = 0
+    for cards in players_hand:
+        for card in cards:
+            splitCard = card.split(" ", 1)
+            if card in WILD:
+                points += 50
+            elif splitCard[1] in POINTS_20:
+                points += 20
+            else:
+                points += int(splitCard[1])
+    return points
+
+# Check winner :
+def check_winner(players_points):
+    for key , value in players_points.items():
+        if value >= 500:
+            winner = True
+            print_green("THE WINNER IS {}!".format(key))
+            print_blue(WINNER_DRAWING)
+            print_yellow("\nYOU DID A GREAT JOB! .. SEE YOU NEXT TIME!")
+        else:
+            winner = False 
+    return winner
+
+# NEW ROUND :
+def new_round(round_number,players_cards,playerNames,player_turn):
+    print_magenta('Winner of this round = {}'.format(playerNames[player_turn-1]))
+    print_blue("\nROUND = {}".format(round_number))
+    
+
+# append card to player hand while playing
+def append_card(draw_cards , player_hands):
+    for card in draw_cards:
+            player_hands.append(card)
+    return player_hands
 
 # Current color :
 def current_color(discard):
@@ -96,8 +156,14 @@ def current_value(discard):
 # Wild card :
 def wild_Card():
     forLoop_print(COLORS)
-    color = int(input(COLOR_CHOICE))
-    cardColor = COLORS[color-1]    
+    valid_number = True
+    while valid_number:
+        try:
+            color = int(input(COLOR_CHOICE))
+            cardColor = COLORS[color-1] 
+            valid_number = False
+        except ValueError:
+            print_red(IVALID_NUMBER)    
     return cardColor
 
 
@@ -107,6 +173,7 @@ def forLoop_print(list):
     for element in list:
         print_magenta("{}) {}".format(i , element))
         i += 1
+
 # Ask the number of players :
 def players_number():
     valid_answer = True
@@ -168,7 +235,6 @@ def start_screen_choice(option):
     elif option == "help":
         print_magenta (HELP_OPTION)
         help_option()
-
 
 # Help option :
 def help_option():

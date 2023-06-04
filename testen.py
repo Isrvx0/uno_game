@@ -1,19 +1,6 @@
-from unoFunction import *
-playersNumber = players_number()
-playerNames   = players_name(playersNumber)
-unoDeck       = buildDeck()
-shuffle_deck(unoDeck)
-playerTurn = 0
-players_cards = dealCards(playersNumber , unoDeck)
-print(players_cards[playerTurn])
-append_card(drawCard(1,unoDeck) , players_cards[playerTurn])
+from uno_data import *
 
-print(players_cards[playerTurn])
-
-
-
-
-
+print(WINNER_DRAWING)
 
 
 
