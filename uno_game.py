@@ -30,8 +30,6 @@ while PLAY_AGAIN:
     players_cards = dealCards(playersNumber , unoDeck)
     cardVal   = current_value (discards[-1])
     cardColor = current_color (discards[-1])
-    print(len(discards))
-    print(len(unoDeck))
 
     while NEW_ROUND: 
         if check_unoDeck(unoDeck):
@@ -81,12 +79,14 @@ while PLAY_AGAIN:
                 players_cards.reverse()
             draw_card = False
 
-
         if len(players_cards[player_turn-1]) <= 0:
             points = point_calculator(players_cards)
             pointList[playerNames[player_turn-1]] += points
             print(pointList)
-            new_round(round_number+1,players_cards, playerNames, player_turn)
+            round_number += 1
+            new_round(round_number,players_cards, playerNames, player_turn)
             NEW_ROUND = False
-        
             
+        if check_winner(pointList) != " ":
+            winner_message(check_winner(pointList))
+            PLAY_AGAIN = False

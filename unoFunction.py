@@ -94,6 +94,7 @@ def check_playedCard(cardVal, cardColor, players_cards):
 #             drawCrad = "NO"
 #     return drawCrad
 
+
 # Points list = 
 def point_list(players_name):
     point = {}
@@ -101,7 +102,7 @@ def point_list(players_name):
         point[name] = 0
     return point
 
-# Winnar function :
+# Point calculator :
 def point_calculator(players_hand):
     points = 0
     for cards in players_hand:
@@ -119,13 +120,17 @@ def point_calculator(players_hand):
 def check_winner(players_points):
     for key , value in players_points.items():
         if value >= 500:
-            winner = True
-            print_green("THE WINNER IS {}!".format(key))
-            print_blue(WINNER_DRAWING)
-            print_yellow("\nYOU DID A GREAT JOB! .. SEE YOU NEXT TIME!")
+            winner = key
         else:
-            winner = False 
+            winner = " " 
     return winner
+
+# Winner's message :
+def winner_message(winner_name):
+    print_green("THE WINNER IS {}!".format(winner_name))
+    print_blue(WINNER_DRAWING)
+    print_yellow("\nYOU DID A GREAT JOB! .. SEE YOU NEXT TIME!")
+
 
 # NEW ROUND :
 def new_round(round_number,players_cards,playerNames,player_turn):
