@@ -3,6 +3,7 @@ VALUES =  list(range(0,10)) + ["Draw Two","Skip","Reverse"]
 WILD   = ["Wild Card" , "Wild Draw Four"]    
 
 POINTS_20 = ["Draw Two","Skip","Reverse"]
+PLAY_DIRECTION = 1
 
 
 ACTION_CARDS = ["Wild Card" , "Wild Draw Four" , "Draw Two","Skip","Reverse"]
@@ -16,7 +17,7 @@ DRAW_TWO_AMOUNT = 2
 WILD_DRAW_FOUR_AMOUNT = 4
 
 player_turn = 0
-play_direction = 1
+PLAY_DIRECTION = 1
 round_number = 1
 
 discards = []

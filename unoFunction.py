@@ -293,9 +293,6 @@ def print_blue(name:str) -> None:
 def print_magenta(name:str) -> None:
     print_colorvars(vars=['{}'.format(name)], color='magenta')
 
-def nextStep(secwait:int=1) -> None:
-    print('')
-    time.sleep(secwait)
 
 
 

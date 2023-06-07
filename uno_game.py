@@ -12,8 +12,6 @@ while HELP_CHOICE :
 playersNumber = players_number()
 playerNames   = players_name(playersNumber)
 
-
-play_direction = 1
 round_number = 1
 
 while PLAY_AGAIN:
@@ -55,7 +53,7 @@ while PLAY_AGAIN:
             if cardColor == "Wild" or cardColor == "Any":
                 cardColor = wild_Card()
             elif cardVal == "Skip":
-                player_turn = check_playerTurn(player_turn,playersNumber,play_direction)
+                player_turn = check_playerTurn(player_turn,playersNumber,PLAY_DIRECTION)
             if cardVal == "Draw Two" or discards[-1] == WILD[1] or cardVal == "Reverse":
                 draw_card = True          
             
@@ -66,7 +64,7 @@ while PLAY_AGAIN:
         if len(players_cards[player_turn]) == 1:
             print_red("\nBE CAREFULL! {} said UNO!".format(playerNames[player_turn]))
         
-        player_turn = check_playerTurn(player_turn,playersNumber,play_direction)
+        player_turn = check_playerTurn(player_turn,playersNumber,PLAY_DIRECTION)
         
         if draw_card:
             if cardVal == "Draw Two":
