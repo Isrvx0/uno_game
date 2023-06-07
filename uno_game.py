@@ -28,10 +28,12 @@ while PLAY_AGAIN:
     players_cards = dealCards(playersNumber , unoDeck)
     cardVal   = current_value (discards[-1])
     cardColor = current_color (discards[-1])
-
+    discards = discards + unoDeck[::-3]
+    
     while NEW_ROUND: 
         if check_unoDeck(unoDeck):
-            unoDeck = random.shuffle(discards)
+            shuffel_disc = shuffle_deck(discards)
+            unoDeck = append_card(shuffel_disc , unoDeck)
             discards.clear()
 
         draw_card = False

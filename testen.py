@@ -1,6 +1,16 @@
 from uno_data import *
+from unoFunction import * 
 
-print(WINNER_DRAWING)
+unoDeck = ["1","2","3"]
+discard = ["1","1","1","1","1","1","1","1"]
+
+if check_unoDeck(unoDeck):
+        shuffel_disc = shuffle_deck(discard)
+        unoDeck = append_card(shuffel_disc , unoDeck)
+        discard.clear()
+
+print(unoDeck)
+print(discard)
 
 
 
